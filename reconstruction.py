@@ -162,9 +162,12 @@ def main():
             
         if('mask_manual' in args.dir_output):
             # find the corresponding template by volume matching
+            reconstruction_mask = reconstruction
+            if(not ("_mask" in reconstruction)):
+                reconstruction_mask = ph.append_to_filename(reconstruction, "_mask")
             template_stack_estimator = \
                         tse.TemplateStackEstimator.from_mask(
-                            ph.append_to_filename(reconstruction, "_mask"),
+                            reconstruction_mask,
                             args.dir_input_templates)
             template_mask = template_stack_estimator.get_path_to_template()
             template = template_mask.replace('_mask_dil.nii.gz', '.nii.gz')
